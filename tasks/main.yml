@@ -1,0 +1,9 @@
+---
+# tasks file for kfieldho.mosquitto
+#
+- include_tasks: roles/kfieldho.mosquitto/tasks/install_with_deb.yml
+  when: not mosquitto_from_source
+
+- include_tasks: roles/kfieldho.mosquitto/tasks/install_from_source.yml
+  when: mosquitto_from_source
+

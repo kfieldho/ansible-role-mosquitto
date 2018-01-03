@@ -1,0 +1,5 @@
+---
+# defaults file for kfieldho.mosquitto
+mosquitto_from_source: False
+mosquitto_repo: https://github.com/eclipse/mosquitto.git
+mosquitto_version: v1.4.14
