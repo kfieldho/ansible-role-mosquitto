@@ -3,3 +3,4 @@
 mosquitto_from_source: False
 mosquitto_repo: https://github.com/eclipse/mosquitto.git
 mosquitto_version: v1.4.14
+mosquitto_config_file: ""

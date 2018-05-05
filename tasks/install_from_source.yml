@@ -15,6 +15,25 @@
       - xsltproc
       - docbook-xsl
 
+- name: Create mosquitto group
+  become: True
+  become_user: root
+  group:
+    name: mosquitto
+    state: present
+
+- name: Create mosquitto user
+  become: True
+  become_user: root
+  user:
+    name: mosquitto
+    state: present
+    createhome: True
+    group: mosquitto
+    shell: /bin/bash
+    skeleton: False
+
+
 - name: Fetch Mosquitto Git Repo
   git:
     repo: "{{ mosquitto_repo }}"
@@ -22,20 +41,28 @@
     version: "{{ mosquitto_version }}"
 
 
-- name: Build Mosquitto Sync
+- name: Build Mosquitto
   make:
   args:
     chdir: "{{ ansible_env.HOME }}/mosquitto"
     params:
       WITH_WEBSOCKETS: yes
 
-- name: Install Mosquitto Sync
+- name: Install Mosquitto
   become: True
   become_user: root
   make:
   args:
     chdir: "{{ ansible_env.HOME }}/mosquitto"
     target: install
+
+- name: Copy over configuration file
+  become: True
+  become_user: root
+  when: not (mosquitto_config_file == "")
+  copy:
+    src: "{{ mosquitto_config_file }}"
+    dest: /etc/mosquitto/mosquitto.conf
 
 - name: Install Mosquitto Systemd Configuration
   become: True
